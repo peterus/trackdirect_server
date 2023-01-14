@@ -1,0 +1,21 @@
+---
+- hosts: trackdirect
+  remote_user: root
+  tasks:
+    - name: Copy config file
+      copy:
+        src: trackdirect
+        dest: /opt/
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Run `docker-compose down`
+      community.docker.docker_compose:
+        project_src: /opt/trackdirect
+        state: absent
+
+    - name: Run `docker-compose up`
+      community.docker.docker_compose:
+        project_src: /opt/trackdirect
+        pull: true

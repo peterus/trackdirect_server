@@ -1,0 +1,39 @@
+- hosts: all
+  remote_user: root
+  vars:
+    TF_VAR_HCLOUD_TOKEN: "{{ lookup('env', 'TF_VAR_HCLOUD_TOKEN') }}"
+  tasks:
+    - name: Add Docker GPG apt Key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+    - name: Add Docker Repository
+      apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu focal stable
+        state: present
+    - name: Update apt and install docker-ce, python3-pip
+      apt:
+        name: docker-ce, python3-pip
+        state: latest
+        update_cache: true
+    - name: check if hetzner volume plugin is installed
+      shell: "docker plugin ls | grep hetzner | wc -l"
+      register: hetzner_volume_plugin_installed
+    - name: install hetzner volume plugin
+      shell: "docker plugin install --alias hetzner --grant-all-permissions costela/docker-volume-hetzner"
+      when: hetzner_volume_plugin_installed.stdout == "0"
+    - name: check if hetzner volume plugin is unconfigured
+      shell: "docker plugin inspect --format='{{ '{{' }}.Settings.Env{{ '}}' }}' hetzner | egrep '.*apikey= .*' | wc -l"
+      register: hetzner_volume_plugin_unconfigured
+    - name: disable hetzner volume plugin
+      shell: "docker plugin disable hetzner"
+      when: hetzner_volume_plugin_unconfigured.stdout == "1"
+    - name: configure hetzner volume plugin
+      shell: "docker plugin set hetzner apikey={{ TF_VAR_HCLOUD_TOKEN }}"
+      when: hetzner_volume_plugin_unconfigured.stdout == "1"
+    - name: enable hetzner volume plugin
+      shell: "docker plugin enable hetzner"
+      when: hetzner_volume_plugin_unconfigured.stdout == "1"
+    - name: install docker and jsondiff python module
+      pip:
+        name: docker, jsondiff, docker-compose
