@@ -10,11 +10,11 @@ terraform {
       version = "2.2.0"
     }
   }
-  #backend "s3" {
-  #  bucket         = "trackdirect-for-hetzner"
-  #  key            = "global/s3/terraform.tfstate"
-  #  region         = "eu-central-1"
-  #  dynamodb_table = "trackdirect-for-hetzner"
-  #  encrypt        = true
-  #}
+  backend "s3" {
+    bucket         = "trackdirect-for-hetzner"
+    key            = "global/s3/terraform.tfstate"
+    region         = "eu-central-1"
+    dynamodb_table = "trackdirect-for-hetzner"
+    encrypt        = true
+  }
 }
