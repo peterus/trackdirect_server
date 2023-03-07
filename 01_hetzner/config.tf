@@ -11,7 +11,7 @@ variable "os-image" {
 }
 
 variable "server-type" {
-  default = "cx21"
+  default = "cpx21"
 }
 
 data "hcloud_datacenter" "nuremberg" {
