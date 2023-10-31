@@ -19,3 +19,10 @@
       community.docker.docker_compose:
         project_src: /opt/trackdirect
         pull: true
+
+    - name: Add cleanup job
+      ansible.builtin.cron:
+        name: "trackdirect cleanup"
+        minute: "0"
+        hour: "0"
+        job: "docker-compose -f /opt/trackdirect/docker-compose.yml exec websocket /root/trackdirect/server/scripts/remover.sh trackdirect.ini"
