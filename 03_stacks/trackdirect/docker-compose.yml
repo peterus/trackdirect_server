@@ -57,5 +57,5 @@ volumes:
   db_single:
     driver: hetzner
     driver_opts:
-      size: '50'
+      size: '150'
       fstype: xfs
