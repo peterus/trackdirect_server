@@ -15,7 +15,7 @@ resource "hcloud_network_subnet" "network_trackdirect-subnet" {
   type         = "cloud"
   network_id   = hcloud_network.network_trackdirect.id
   network_zone = "eu-central"
-  ip_range = "10.0.0.0/24"
+  ip_range     = "10.0.0.0/24"
 }
 
 resource "hcloud_server" "trackdirect" {
@@ -27,6 +27,7 @@ resource "hcloud_server" "trackdirect" {
 
   network {
     network_id = hcloud_network.network_trackdirect.id
+    ip         = "10.0.0.2"
   }
 
   depends_on = [
@@ -79,7 +80,7 @@ resource "hcloud_load_balancer_network" "srvnetwork" {
 
 resource "hetznerdns_zone" "zone1" {
   name = "aprs-map.info"
-  ttl = 60
+  ttl  = 60
   lifecycle {
     prevent_destroy = true
   }
@@ -87,8 +88,8 @@ resource "hetznerdns_zone" "zone1" {
 
 resource "hetznerdns_record" "testaprs" {
   zone_id = hetznerdns_zone.zone1.id
-  name = "@"
-  value = hcloud_load_balancer.load_balancer_trackdirect.ipv4
-  type = "A"
-  ttl= 60
+  name    = "@"
+  value   = hcloud_load_balancer.load_balancer_trackdirect.ipv4
+  type    = "A"
+  ttl     = 60
 }

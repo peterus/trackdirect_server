@@ -3,6 +3,7 @@
 cd 01_hetzner
 
 terraform init
+terraform plan
 terraform apply -auto-approve
 sleep 30
 ./terraform-swarm-inventory.py --accept
