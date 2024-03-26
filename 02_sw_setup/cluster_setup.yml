@@ -1,4 +1,4 @@
-- hosts: all
+- hosts: trackdirect
   remote_user: root
   vars:
     TF_VAR_HCLOUD_TOKEN: "{{ lookup('env', 'TF_VAR_HCLOUD_TOKEN') }}"

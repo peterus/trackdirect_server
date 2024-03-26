@@ -11,14 +11,14 @@
         mode: '0644'
 
     - name: Run `docker-compose down`
-      community.docker.docker_compose:
+      community.docker.docker_compose_v2:
         project_src: /opt/trackdirect
         state: absent
 
     - name: Run `docker-compose up`
-      community.docker.docker_compose:
+      community.docker.docker_compose_v2:
         project_src: /opt/trackdirect
-        pull: true
+        pull: always
 
     - name: Add cleanup job
       ansible.builtin.cron:

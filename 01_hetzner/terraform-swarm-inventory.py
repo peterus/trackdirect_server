@@ -38,7 +38,7 @@ def main():
         print('\n'.join(hosts))
     if args.list:
         inventory = {
-            'trackdirect': list(trackdirect.keys())
+            'all_servers': list(trackdirect.keys())
         }
         print(json.dumps(inventory))
     if args.host:
